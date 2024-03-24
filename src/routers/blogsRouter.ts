@@ -1,9 +1,9 @@
 import {Request, Response, Router} from "express";
 import {blogs, blogsRepository} from "../repositories/blogs-repository";
 import {CodeResponsesEnum} from "../utils/utils";
-import {OutputBlogType} from "../utils/types";
+import {OutputBlogType, OutputPostType} from "../utils/types";
 import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
-import {postsRepository} from "../repositories/posts-repository";
+import {posts, postsRepository} from "../repositories/posts-repository";
 export const blogsRouter = Router({});
 
 blogsRouter.get('/', (req:Request, res:Response)=>{
@@ -20,8 +20,6 @@ blogsRouter.get('/:id', async (req:Request, res:Response)=>{
 });
 
 blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
-    debugger
-    console.log('BLOG_POSTS: ', {req, res})
      const blogID = req.params.id;
      const blogByID:OutputBlogType|null = await blogsRepository.findBlogByID(blogID);
     if(!blogID || !blogByID){
@@ -39,6 +37,19 @@ blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErro
     if (newBlog){
         blogs.push(newBlog);
         res.status(CodeResponsesEnum.Created_201).send(newBlog);
+    }
+});
+
+blogsRouter.post('/:id/posts', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+    const blogID = req.params.id;
+    const blogByID:OutputBlogType|null = await blogsRepository.findBlogByID(blogID);
+    if(!blogID || !blogByID){
+        return res.sendStatus(CodeResponsesEnum.Not_found_404);
+    }
+    const newPost: OutputPostType|null = await postsRepository.createPost(req.body, blogByID.name);
+    if (newPost){
+        posts.push(newPost);
+        res.status(CodeResponsesEnum.Created_201).send(newPost);
     }
 });
 
