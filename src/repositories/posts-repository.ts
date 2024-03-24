@@ -25,15 +25,12 @@ export const postsRepository = {
         const posts: WithId<PostType>[] = await postsCollection.find({ blogId: blogID }).toArray();
         return posts.map(post => PostMapper(post));
     },
-   async createPost(body:PostType, blogName:string):Promise<OutputPostType | null> {
-       if (!body.blogId) {
-           return null;
-       }
+   async createPost(body:PostType, blogName:string,blogID:string):Promise<OutputPostType | null> {
         const newPost:PostType = {
             title: body.title,
             shortDescription: body.shortDescription,
             content: body.content,
-            blogId: body.blogId,
+            blogId: body.blogId ?? blogID,
             blogName,
             createdAt: new Date().toISOString()
         }
