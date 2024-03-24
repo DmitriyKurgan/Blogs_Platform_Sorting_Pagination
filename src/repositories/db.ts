@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv'
 dotenv.config()
 
-const mongoURI = process.env.MONGO_URL
+const mongoURI = process.env.MONGO_URL || "mongodb+srv://dimakurgan123789:annogolik123789@blogsplatform.mxifx0s.mongodb.net/?retryWrites=true&w=majority&appName=BlogsPlatform"
 if (!mongoURI){
     throw new Error('Database url is not defined!')
 }

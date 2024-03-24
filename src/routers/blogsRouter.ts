@@ -3,6 +3,7 @@ import {blogs, blogsRepository} from "../repositories/blogs-repository";
 import {CodeResponsesEnum} from "../utils/utils";
 import {OutputBlogType} from "../utils/types";
 import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
+import {postsRepository} from "../repositories/posts-repository";
 export const blogsRouter = Router({});
 
 blogsRouter.get('/', (req:Request, res:Response)=>{
@@ -21,12 +22,16 @@ blogsRouter.get('/:id', async (req:Request, res:Response)=>{
 blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
     debugger
     console.log('BLOG_POSTS: ', {req, res})
-    // const blogID = req.params.id;
-    // const blogByID = await blogsRepository.findBlogByID(blogID);
-    // if(!blogID || !blogByID){
-    //     return res.sendStatus(CodeResponsesEnum.Not_found_404);
-    // }
-    // res.status(CodeResponsesEnum.OK_200).send(blogByID);
+     const blogID = req.params.id;
+     const blogByID:OutputBlogType|null = await blogsRepository.findBlogByID(blogID);
+    if(!blogID || !blogByID){
+        return res.sendStatus(CodeResponsesEnum.Not_found_404);
+    }
+    const posts = await postsRepository.findAllPostsByBlogID(blogID)
+    if (!posts){
+        return res.sendStatus(CodeResponsesEnum.Not_found_404);
+    }
+     res.status(CodeResponsesEnum.OK_200).send(posts);
 });
 
 blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
