@@ -26,6 +26,9 @@ export const postsRepository = {
         return posts.map(post => PostMapper(post));
     },
    async createPost(body:PostType, blogName:string):Promise<OutputPostType | null> {
+       if (!body.blogId) {
+           return null;
+       }
         const newPost:PostType = {
             title: body.title,
             shortDescription: body.shortDescription,
