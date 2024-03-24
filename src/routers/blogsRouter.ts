@@ -40,7 +40,7 @@ blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErro
     }
 });
 
-blogsRouter.post('/:id/posts', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.post('/:id/posts', validateAuthorization, validateBlogsRequests, async (req:Request, res:Response)=>{
     const blogID = req.params.id;
     const blogByID:OutputBlogType|null = await blogsRepository.findBlogByID(blogID);
     if(!blogID || !blogByID){
