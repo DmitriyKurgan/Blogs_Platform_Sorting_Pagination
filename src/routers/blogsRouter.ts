@@ -28,8 +28,8 @@ blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
     const posts = await postsRepository.findAllPostsByBlogID(blogID)
-    if (!posts){
-        return res.sendStatus(CodeResponsesEnum.Not_found_404);
+    if (!posts || !posts.length){
+        return res.status(CodeResponsesEnum.OK_200).send([])
     }
      res.status(CodeResponsesEnum.OK_200).send(posts);
 });
