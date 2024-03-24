@@ -18,6 +18,17 @@ blogsRouter.get('/:id', async (req:Request, res:Response)=>{
    res.status(CodeResponsesEnum.OK_200).send(blogByID);
 });
 
+blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
+    debugger
+    console.log('BLOG_POSTS: ', {req, res})
+    // const blogID = req.params.id;
+    // const blogByID = await blogsRepository.findBlogByID(blogID);
+    // if(!blogID || !blogByID){
+    //     return res.sendStatus(CodeResponsesEnum.Not_found_404);
+    // }
+    // res.status(CodeResponsesEnum.OK_200).send(blogByID);
+});
+
 blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const newBlog: OutputBlogType|null = await blogsRepository.createBlog(req.body);
     if (newBlog){

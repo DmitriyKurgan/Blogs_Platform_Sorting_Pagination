@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "blogs_platform_mongoDB",
+  "name": "blogs_platform_mongo_sorting_pagination",
   "builds": [
     { "src": "src/index.ts", "use": "@vercel/node" }
   ],
