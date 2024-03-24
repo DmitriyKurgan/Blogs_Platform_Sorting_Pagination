@@ -46,6 +46,7 @@ blogsRouter.post('/:id/posts', validateAuthorization, validateBlogsRequests, asy
     if(!blogID || !blogByID){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
+    debugger
     const newPost: OutputPostType|null = await postsRepository.createPost(req.body, blogByID.name);
     if (newPost){
         posts.push(newPost);

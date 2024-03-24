@@ -74,19 +74,6 @@ export const validatePostsRequests = [
         .withMessage(
             "Short description length must be more than 0 and less than or equal to 100 symbols"
         ),
-    body("shortDescription")
-        .exists()
-        .withMessage("Short description is required")
-        .isString()
-        .withMessage("Type of short description must be string")
-        .trim()
-        .isLength({
-            min: 1,
-            max: 100,
-        })
-        .withMessage(
-            "Short description length must be more than 0 and less than or equal to 100 symbols"
-        ),
     body("content")
         .exists()
         .withMessage("Content is required")
@@ -106,6 +93,7 @@ export const validatePostsRequests = [
         .isString()
         .withMessage("Type of Blog ID must be string"),
 ];
+
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
     if (req.headers.authorization !== "Basic YWRtaW46cXdlcnR5") {
