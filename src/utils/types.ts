@@ -28,8 +28,15 @@ export type BlogsServiceType = {
 
 export type PostsServiceType = {
     findPostByID(postID: string): Promise<OutputPostType | null>
-    findAllPostsByBlogID(blogID: string): Promise<OutputPostType[] | null>
     createPost(body: PostType, blogName: string, blogID: string):Promise<OutputPostType | null>
     updatePost(postID: string, body: PostType): Promise<boolean>
     deletePost(postID: string): Promise<boolean>
+}
+
+export type Paginator<T> = {
+    pagesCount: number;
+    page: number;
+    pageSize: number;
+    totalCount: number;
+    items: T;
 }

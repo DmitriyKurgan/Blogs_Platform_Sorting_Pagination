@@ -6,9 +6,9 @@ export const postsService: PostsServiceType = {
     async findPostByID(postID:string):Promise<OutputPostType | null> {
         return await postsRepository.findPostByID(postID);
     },
-    async findAllPostsByBlogID(blogID:string):Promise<OutputPostType[] | null>{
-        return await postsRepository.findAllPostsByBlogID(blogID);
-    },
+    // async findAllPostsByBlogID(blogID:string):Promise<OutputPostType[] | null>{
+    //     return await postsRepository.findAllPostsByBlogID(blogID);
+    // },
    async createPost(body:PostType, blogName:string,blogID:string):Promise<OutputPostType | null> {
         const newPost:PostType = {
             title: body.title,
