@@ -1,4 +1,4 @@
-import {client} from "./db";
+import {client} from "../repositories/db";
 import {InsertOneResult, ObjectId, WithId, UpdateResult, DeleteResult} from "mongodb";
 import {BLogType, OutputBlogType, PostType} from "../utils/types";
 export const blogs = [] as BLogType[]
@@ -21,14 +21,7 @@ export const blogsRepository = {
        const blog: WithId<BLogType> | null = await blogsCollection.findOne({_id: new ObjectId(blogID)});
        return blog ? BLogMapper(blog) : null
     },
-    async createBlog(body:BLogType):Promise<OutputBlogType | null> {
-        const newBlog:BLogType = {
-            name: body.name,
-            description: body.description,
-            websiteUrl: body.websiteUrl,
-            createdAt: new Date().toISOString(),
-            isMembership: false
-        }
+    async createBlog(newBlog:BLogType):Promise<OutputBlogType | null> {
         const result:InsertOneResult<BLogType> = await blogsCollection.insertOne(newBlog);
         const blog = await blogsCollection.findOne({_id: result.insertedId});
         return blog ? BLogMapper(blog) : null;

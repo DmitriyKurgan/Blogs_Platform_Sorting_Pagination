@@ -1,4 +1,4 @@
-import {client} from "./db";
+import {client} from "../repositories/db";
 import {ObjectId, WithId, InsertOneResult, UpdateResult, DeleteResult} from "mongodb";
 import {OutputPostType, PostType} from "../utils/types";
 export const posts = [] as PostType[]
@@ -25,16 +25,7 @@ export const postsRepository = {
         const posts: WithId<PostType>[] = await postsCollection.find({ blogId: blogID }).toArray();
         return posts.map(post => PostMapper(post));
     },
-   async createPost(body:PostType, blogName:string,blogID:string):Promise<OutputPostType | null> {
-        const newPost:PostType = {
-            title: body.title,
-            shortDescription: body.shortDescription,
-            content: body.content,
-            blogId: body.blogId ?? blogID,
-            blogName,
-            createdAt: new Date().toISOString()
-        }
-
+   async createPost(newPost:PostType):Promise<OutputPostType | null> {
        const result:InsertOneResult<PostType> = await postsCollection.insertOne(newPost)
        const post = await postsCollection.findOne({_id:result.insertedId})
        return post ? PostMapper(post) : null

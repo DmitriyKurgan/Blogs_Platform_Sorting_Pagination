@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {body, ValidationError, validationResult} from 'express-validator';
-import {blogs, blogsRepository} from "../repositories/blogs-repository";
+import {blogsService} from "../services/blogs-service";
 const websiteUrlPattern =
     /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/;
 export const validateBlogsRequests = [
@@ -134,7 +134,7 @@ export const validateErrorsMiddleware = (
 };
 
 export const validationPostsCreation = body("blogId").custom(async (value) => {
-    const result = await blogsRepository.findBlogByID(value);
+    const result = await blogsService.findBlogByID(value);
     if (!result) {
         throw new Error("Blog with provided ID not found");
     }
