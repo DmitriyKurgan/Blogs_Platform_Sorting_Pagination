@@ -42,11 +42,11 @@ blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
     const Post = new PostModel();
-    const pageNumber = req.query.pageNumber ? parseInt(req.query.pageNumber as string, 10) : 1;
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : 10;
-    const sortBy = req.query.sortBy ? req.query.sortBy as string : "createdAt";
-    const sortDirection = req.query.sortDirection ? req.query.sortDirection as "asc" | "desc" : "desc";
-    const searchTitleTerm = req.query.searchTitleTerm ? req.query.searchTitleTerm as string : undefined;
+    const pageNumber = req.params.pageNumber ? parseInt(req.params.pageNumber as string, 10) : 1;
+    const pageSize = req.params.pageSize ? parseInt(req.params.pageSize as string, 10) : 10;
+    const sortBy = req.params.sortBy ? req.params.sortBy as string : "createdAt";
+    const sortDirection = req.params.sortDirection ? req.params.sortDirection as "asc" | "desc" : "desc";
+    const searchTitleTerm = req.params.searchTitleTerm ? req.params.searchTitleTerm as string : undefined;
 
     // Вызываем метод findAllPostsByBlogId с передачей всех параметров
     const posts = await findAllPostsByBlogId(Post, blogID, pageNumber, pageSize, sortBy, sortDirection, searchTitleTerm);
