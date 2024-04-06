@@ -6,7 +6,7 @@ import {postsCollection} from "../posts-repository";
 
 
 export async function findAllPostsByBlogID(blogID: string, query: any): Promise<any | { error: string }> {
-    const byId = blogID ? {  _id: new ObjectId(blogID) } : {};
+    const byId = blogID ? {  blogId: blogID } : {};
     const search = query.searchNameTerm
         ? { title: { $regex: query.searchNameTerm, $options: 'i' } }
         : {};
@@ -14,6 +14,7 @@ export async function findAllPostsByBlogID(blogID: string, query: any): Promise<
         ...byId,
         ...search,
     };
+
     try {
         const items = await postsCollection
             .find(filter)
