@@ -55,7 +55,6 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
 }
 
 export const getBlogsFromBD = async (query:any, blogID?:string) => {
-    debugger
     const byId = blogID ? {  blogId: blogID } : {};
     const search = query.searchNameTerm
         ? { title: { $regex: query.searchNameTerm, $options: 'i' } }
@@ -73,7 +72,7 @@ export const getBlogsFromBD = async (query:any, blogID?:string) => {
             .limit(query.pageSize)
             .toArray();
 
-        const totalCount = await postsCollection.countDocuments(filter);
+        const totalCount = await blogsCollection.countDocuments(filter);
         return {
             pagesCount: Math.ceil(totalCount / query.pageSize),
             page: query.pageNumber,
