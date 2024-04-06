@@ -55,6 +55,7 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
 }
 
 export const getBlogsFromBD = async (query:any, blogID?:string) => {
+    debugger
     const byId = blogID ? {  blogId: blogID } : {};
     const search = query.searchNameTerm
         ? { title: { $regex: query.searchNameTerm, $options: 'i' } }

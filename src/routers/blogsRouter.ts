@@ -11,7 +11,6 @@ export const blogsRouter = Router({});
 
 blogsRouter.get('/', async (req:Request, res:Response)=>{
     const queryValues = getQueryValues(req.query.pageNumber,req.query.pageSize,req.query.sortBy,req.query.sortDirection,req.query.searchTitleTerm)
-   debugger
     const blogs =  await getAllBlogs({...queryValues})
     if (!blogs || !blogs.items.length) {
         return res.status(CodeResponsesEnum.OK_200).send([]);
