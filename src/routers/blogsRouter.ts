@@ -1,10 +1,10 @@
 import {Request, Response, Router} from "express";
 import {blogs, blogsService} from "../services/blogs-service";
-import {CodeResponsesEnum} from "../utils/utils";
+import {CodeResponsesEnum, getQueryValues} from "../utils/utils";
 import {OutputBlogType, OutputPostType} from "../utils/types";
 import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
 import {posts, postsService} from "../services/posts-service";
-import {findAllPostsByBlogID} from "../repositories/query-repositories/blogs-query-repository";
+import {findAllPostsByBlogID} from "../repositories/query-repositories/posts-query-repository";
 
 export const blogsRouter = Router({});
 
@@ -27,13 +27,10 @@ blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
     if(!blogID || !blogByID){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
-    const pageNumber = req.query.pageNumber ? parseInt(req.query.pageNumber as string, 10) : 1;
-    const pageSize = req.query.pageSize ? parseInt(req.query.pageSize as string, 10) : 10;
-     const sortBy = req.query.sortBy ? req.query.sortBy as string : "createdAt";
-     const sortDirection = req.query.sortDirection ? req.query.sortDirection as "asc" | "desc" : "desc";
-     const searchNameTerm = req.query.searchTitleTerm ? req.query.searchTitleTerm as string : undefined;
 
-    const posts = await findAllPostsByBlogID(blogID, {pageNumber, pageSize,sortBy,sortDirection,searchNameTerm});
+    const queryValues = getQueryValues(req.query.pageNumber,req.query.pageSize,req.query.sortBy,req.query.sortDirection,req.query.searchTitleTerm)
+
+    const posts = await findAllPostsByBlogID(blogID, {...queryValues});
 
     if (!posts || !posts.items.length) {
         return res.status(CodeResponsesEnum.OK_200).send([]);
