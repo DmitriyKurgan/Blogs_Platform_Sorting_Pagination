@@ -15,7 +15,7 @@ export const PostMapper = (post : WithId<PostType>) : OutputPostType => {
     }
 }
 
-const postsCollection =  client.db('learning').collection<PostType>('blogs')
+export const postsCollection =  client.db('learning').collection<PostType>('blogs')
 export const postsRepository = {
     async findPostByID(postID:string):Promise<OutputPostType | null> {
         const post: WithId<PostType> | null = await postsCollection.findOne({_id: new ObjectId(postID)});

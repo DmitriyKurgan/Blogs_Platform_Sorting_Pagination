@@ -1,39 +1,43 @@
 import {FilterQuery, Model, Document} from 'mongoose';
-import {Paginator} from "../../utils/types";
+import {Paginator, PostType} from "../../utils/types";
+import {ObjectId,Filter} from "mongodb";
+import {query} from "express-validator";
+import {postsCollection} from "../posts-repository";
 
 
-export async function findAllPostsByBlogId(
-    Post: Model<Document>,
-    blogId: string,
-    pageNumber: number,
-    pageSize: number,
-    sortBy: string = "createdAt",
-    sortDirection: "asc" | "desc" = "desc",
-    searchTitleTerm?: string
-): Promise<Paginator<Document[]>> {
-    const filter: FilterQuery<Document> = { blogId };
-
-    if (searchTitleTerm) {
-        filter['title'] = { $regex: searchTitleTerm, $options: "i" };
-    }
-
-    const posts = await Post.find(filter)
-        .sort({ [sortBy]: sortDirection })
-        .skip(pageNumber > 0 ? (pageNumber - 1) * pageSize : 0)
-        .limit(pageSize > 0 ? pageSize : 0)
-        .lean();
-
-    const totalCount = await Post.countDocuments(filter);
-    const pagesCount = Math.ceil(totalCount / pageSize);
-
-    return {
-        pagesCount: pagesCount,
-        page: pageNumber,
-        pageSize: pageSize,
-        totalCount,
-        items: posts,
+export async function findAllPostsByBlogID(blogID: string, query: any): Promise<any | { error: string }> {
+    const byId = blogID ? { blogId: new ObjectId(blogID) } : {};
+    const search = query.searchNameTerm
+        ? { title: { $regex: query.searchNameTerm, $options: 'i' } }
+        : {};
+    const filter = {
+        ...byId,
+        ...search,
     };
+
+    try {
+        const items = await postsCollection
+            .find(filter as Filter<PostType>)
+            .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+            .skip((query.pageNumber - 1) * query.pageSize)
+            .limit(query.pageSize)
+            .toArray();
+
+        const totalCount = await postsCollection.countDocuments(filter as Filter<PostType>);
+
+        return {
+            pagesCount: Math.ceil(totalCount / query.pageSize),
+            page: query.pageNumber,
+            pageSize: query.pageSize,
+            totalCount,
+            items: items,
+        };
+    } catch (e) {
+        console.log(e);
+        return { error: 'some error' };
+    }
 }
+
 
 export async function findPostById(Post: Model<Document>, _id: string): Promise<Document | null> {
     const foundPost = await Post.findOne({ _id });
