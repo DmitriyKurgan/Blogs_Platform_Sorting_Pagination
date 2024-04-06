@@ -4,15 +4,22 @@ import {
     validateErrorsMiddleware,
     validatePostsRequests, validationPostsCreation
 } from "../middlewares/middlewares";
-import {CodeResponsesEnum} from "../utils/utils";
+import {CodeResponsesEnum, getQueryValues} from "../utils/utils";
 import {posts, postsService} from "../services/posts-service";
 import {OutputBlogType, OutputPostType} from "../utils/types";
 import {blogsService} from "../services/blogs-service";
+import {getAllBlogs} from "../repositories/query-repositories/blogs-query-repository";
+import {getAllPosts} from "../repositories/query-repositories/posts-query-repository";
 
 export const postsRouter = Router({});
 
-postsRouter.get('/', (req:Request, res:Response)=>{
-    res.send(posts).status(CodeResponsesEnum.OK_200);
+postsRouter.get('/', async (req:Request, res:Response)=>{
+    const queryValues = getQueryValues(req.query.pageNumber,req.query.pageSize,req.query.sortBy,req.query.sortDirection,req.query.searchTitleTerm)
+    const posts =  await getAllPosts({...queryValues})
+    if (!posts || !posts.items.length) {
+        return res.status(CodeResponsesEnum.OK_200).send([]);
+    }
+    res.status(CodeResponsesEnum.OK_200).send(posts);
 });
 
 postsRouter.get('/:id', async (req:Request, res:Response)=>{
@@ -29,7 +36,7 @@ postsRouter.post('/', validateAuthorization, validatePostsRequests, validationPo
     if (!blog){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
     }
-    const newPost: OutputPostType| null = await postsService.createPost(req.body, blog.name);
+    const newPost: OutputPostType| null = await postsService.createPost( req.body, blog.name, blog.id);
     if (!newPost) {
         return
     }

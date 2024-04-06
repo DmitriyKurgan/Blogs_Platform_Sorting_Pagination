@@ -5,11 +5,17 @@ import {OutputBlogType, OutputPostType} from "../utils/types";
 import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
 import {posts, postsService} from "../services/posts-service";
 import {findAllPostsByBlogID} from "../repositories/query-repositories/posts-query-repository";
+import {getAllBlogs} from "../repositories/query-repositories/blogs-query-repository";
 
 export const blogsRouter = Router({});
 
-blogsRouter.get('/', (req:Request, res:Response)=>{
-    res.send(blogs).status(CodeResponsesEnum.OK_200);
+blogsRouter.get('/', async (req:Request, res:Response)=>{
+    const queryValues = getQueryValues(req.query.pageNumber,req.query.pageSize,req.query.sortBy,req.query.sortDirection,req.query.searchTitleTerm)
+    const blogs =  await getAllBlogs({...queryValues})
+    if (!blogs || !blogs.items.length) {
+        return res.status(CodeResponsesEnum.OK_200).send([]);
+    }
+    res.status(CodeResponsesEnum.OK_200).send(blogs);
 });
 
 blogsRouter.get('/:id', async (req:Request, res:Response)=>{
@@ -24,9 +30,9 @@ blogsRouter.get('/:id', async (req:Request, res:Response)=>{
 blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
      const blogID = req.params.id;
      const blogByID:OutputBlogType|null = await blogsService.findBlogByID(blogID);
-    if(!blogID || !blogByID){
+     if(!blogID || !blogByID){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
-    }
+     }
 
     const queryValues = getQueryValues(req.query.pageNumber,req.query.pageSize,req.query.sortBy,req.query.sortDirection,req.query.searchTitleTerm)
 

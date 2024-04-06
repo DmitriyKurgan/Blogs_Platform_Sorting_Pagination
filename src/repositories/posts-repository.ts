@@ -21,10 +21,6 @@ export const postsRepository = {
         const post: WithId<PostType> | null = await postsCollection.findOne({_id: new ObjectId(postID)});
         return post ? PostMapper(post) : null
     },
-    async findAllPostsByBlogID(blogID:string):Promise<OutputPostType[] | null>{
-        const posts: WithId<PostType>[] = await postsCollection.find({ blogId: blogID }).toArray();
-        return posts.map(post => PostMapper(post));
-    },
    async createPost(newPost:PostType):Promise<OutputPostType | null> {
        const result:InsertOneResult<PostType> = await postsCollection.insertOne(newPost)
        const post = await postsCollection.findOne({_id:result.insertedId})
