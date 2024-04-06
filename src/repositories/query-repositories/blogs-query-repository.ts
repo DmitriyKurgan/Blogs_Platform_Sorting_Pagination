@@ -14,6 +14,5 @@ export const BLogMapper = (blog : WithId<BLogType>) : OutputBlogType => {
 }
 
 export async function getAllBlogs(query: any): Promise<any | { error: string }> {
-    debugger
     return getBlogsFromBD(query);
 }
