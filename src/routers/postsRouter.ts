@@ -8,7 +8,6 @@ import {CodeResponsesEnum, getQueryValues} from "../utils/utils";
 import {posts, postsService} from "../services/posts-service";
 import {OutputBlogType, OutputPostType} from "../utils/types";
 import {blogsService} from "../services/blogs-service";
-import {getAllBlogs} from "../repositories/query-repositories/blogs-query-repository";
 import {getAllPosts} from "../repositories/query-repositories/posts-query-repository";
 
 export const postsRouter = Router({});

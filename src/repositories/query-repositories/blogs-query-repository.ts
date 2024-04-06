@@ -1,10 +1,6 @@
-import {FilterQuery, Model, Document} from 'mongoose';
-import {BLogType, OutputBlogType, OutputPostType, Paginator, PostType} from "../../utils/types";
-import {ObjectId, Filter, WithId} from "mongodb";
-import {postsCollection} from "../posts-repository";
-import {PostMapper} from "./posts-query-repository";
-import {getItemsFromBD} from "../../utils/utils";
-
+import {BLogType, OutputBlogType} from "../../utils/types";
+import {WithId} from "mongodb";
+import {getBlogsFromBD} from "../../utils/utils";
 
 export const BLogMapper = (blog : WithId<BLogType>) : OutputBlogType => {
     return {
@@ -18,5 +14,5 @@ export const BLogMapper = (blog : WithId<BLogType>) : OutputBlogType => {
 }
 
 export async function getAllBlogs(query: any): Promise<any | { error: string }> {
-    return getItemsFromBD(query);
+    return getBlogsFromBD(query);
 }

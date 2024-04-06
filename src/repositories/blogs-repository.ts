@@ -5,7 +5,7 @@ import {BLogMapper} from "./query-repositories/blogs-query-repository";
 export const blogs = [] as BLogType[]
 
 
-const blogsCollection =  client.db('learning').collection<BLogType>('blogs')
+export const blogsCollection =  client.db('learning').collection<BLogType>('blogs')
 export const blogsRepository = {
 
    async findBlogByID(blogID:string):Promise<OutputBlogType | null> {

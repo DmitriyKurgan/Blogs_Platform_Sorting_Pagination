@@ -1,8 +1,6 @@
-import {Model, Document} from 'mongoose';
 import {WithId} from "mongodb";
 import {OutputPostType, PostType} from "../../utils/types";
-import {postsCollection} from "../posts-repository";
-import {getItemsFromBD} from "../../utils/utils";
+import {getPostsFromBD} from "../../utils/utils";
 
 export const PostMapper = (post : WithId<PostType>) : OutputPostType => {
     return {
@@ -17,9 +15,9 @@ export const PostMapper = (post : WithId<PostType>) : OutputPostType => {
 }
 
 export async function getAllPosts(query:any): Promise<any | { error: string }> {
-    return getItemsFromBD(query);
+    return getPostsFromBD(query);
 }
 
 export async function findAllPostsByBlogID(blogID: string, query: any): Promise<any | { error: string }> {
-    return getItemsFromBD(query, blogID)
+    return getPostsFromBD(query, blogID)
 }
