@@ -100,15 +100,11 @@ export const validateBlogIdForPostsRequests = [
 
 export const validationBlogsFindByParamId = param("id").custom(
     async (value) => {
-        try {
-            const result = await blogsRepository.findBlogByID(value);
-            if (!result) {
-                throw new Error("ID not found");
-            }
-            return true;
-        } catch (error) {
+        const result = await blogsRepository.findBlogByID(value);
+        if (!result) {
             throw new Error("ID not found");
         }
+        return true;
     }
 );
 

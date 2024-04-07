@@ -73,7 +73,7 @@ blogsRouter.post('/:id/posts', validateAuthorization, validatePostsRequests,vali
     }
 });
 
-blogsRouter.put('/:id', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.put('/:id', validateAuthorization,validationBlogsFindByParamId, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const blogID = req.params.id;
     const isUpdated:boolean = await blogsService.updateBlog(blogID, req.body);
     if (!isUpdated || !blogID){
@@ -84,7 +84,7 @@ blogsRouter.put('/:id', validateAuthorization, validateBlogsRequests, validateEr
     res.status(CodeResponsesEnum.Not_content_204).send(blog);
 });
 
-blogsRouter.delete('/:id', validateAuthorization, validateErrorsMiddleware,async (req:Request, res:Response)=>{
+blogsRouter.delete('/:id', validateAuthorization, validationBlogsFindByParamId, validateErrorsMiddleware,async (req:Request, res:Response)=>{
     const blogID:string = req.params.id;
     const isDeleted:boolean = await blogsService.deleteBlog(blogID);
     if (!isDeleted || !blogID){
