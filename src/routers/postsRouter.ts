@@ -54,7 +54,7 @@ postsRouter.put('/:id', validateAuthorization, validatePostsRequests,validateBlo
     res.status(CodeResponsesEnum.Not_content_204).send(postByID);
 });
 
-postsRouter.delete('/:id', validateAuthorization, validatePostsRequests,validateBlogIdForPostsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+postsRouter.delete('/:id', validateAuthorization,validateBlogIdForPostsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isDeleted = await postsService.deletePost(postID);
     if(!isDeleted || !postID){
