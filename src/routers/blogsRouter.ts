@@ -59,7 +59,7 @@ blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErro
     }
 });
 
-blogsRouter.post('/:id/posts', validateAuthorization, validationPostsCreation, validatePostsRequests,validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.post('/:id/posts', validateAuthorization, validatePostsRequests,validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const blogID = req.params.id;
     const blogByID:OutputBlogType|null = await blogsService.findBlogByID(blogID);
     if(!blogID || !blogByID){
