@@ -1,4 +1,4 @@
-import {client, postsCollection} from "../repositories/db";
+import {postsCollection} from "../repositories/db";
 import {ObjectId, WithId, InsertOneResult, UpdateResult, DeleteResult} from "mongodb";
 import {OutputPostType, PostType} from "../utils/types";
 export const posts = [] as PostType[]
