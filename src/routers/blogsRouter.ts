@@ -2,7 +2,12 @@ import {Request, Response, Router} from "express";
 import {blogs, blogsService} from "../services/blogs-service";
 import {CodeResponsesEnum, getQueryValues} from "../utils/utils";
 import {OutputBlogType, OutputPostType} from "../utils/types";
-import {validateAuthorization, validateBlogsRequests, validateErrorsMiddleware} from "../middlewares/middlewares";
+import {
+    validateAuthorization,
+    validateBlogsRequests,
+    validateErrorsMiddleware,
+    validationPostsCreation
+} from "../middlewares/middlewares";
 import {posts, postsService} from "../services/posts-service";
 import {findAllPostsByBlogID} from "../repositories/query-repositories/posts-query-repository";
 import {getAllBlogs} from "../repositories/query-repositories/blogs-query-repository";
@@ -18,7 +23,8 @@ blogsRouter.get('/', async (req:Request, res:Response)=>{
     res.status(CodeResponsesEnum.OK_200).send(blogs);
 });
 
-blogsRouter.get('/:id', async (req:Request, res:Response)=>{
+blogsRouter.get('/:id', validateBlogsRequests, validationPostsCreation, async (req:Request, res:Response)=>{
+    debugger
    const blogID = req.params.id;
    const blogByID = await blogsService.findBlogByID(blogID);
    if(!blogID || !blogByID){
