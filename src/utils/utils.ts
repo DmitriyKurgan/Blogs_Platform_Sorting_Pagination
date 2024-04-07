@@ -55,13 +55,12 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
     }
 }
 
-export const getBlogsFromBD = async (query:any, blogID?:string) => {
-    const byId = blogID ? {  blogId: blogID } : {};
+export const getBlogsFromBD = async (query:any) => {
+    debugger
     const search = query.searchNameTerm
         ? { name: { $regex: query.searchNameTerm, $options: 'i' } }
         : {};
     const filter = {
-        ...byId,
         ...search,
     };
 
