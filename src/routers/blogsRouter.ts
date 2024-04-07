@@ -51,7 +51,7 @@ blogsRouter.get('/:id/posts', async (req:Request, res:Response)=>{
     res.status(CodeResponsesEnum.OK_200).send(posts);
 });
 
-blogsRouter.post('/', validateAuthorization, validationPostsCreation, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.post('/', validateAuthorization, validateBlogsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const newBlog: OutputBlogType|null = await blogsService.createBlog(req.body);
     if (newBlog){
         blogs.push(newBlog);
@@ -59,7 +59,7 @@ blogsRouter.post('/', validateAuthorization, validationPostsCreation, validateBl
     }
 });
 
-blogsRouter.post('/:id/posts', validateAuthorization, validatePostsRequests,validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.post('/:id/posts', validateAuthorization, validationPostsCreation, validatePostsRequests,validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const blogID = req.params.id;
     const blogByID:OutputBlogType|null = await blogsService.findBlogByID(blogID);
     if(!blogID || !blogByID){
