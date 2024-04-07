@@ -24,7 +24,6 @@ export const getQueryValues = (pageNumber?:any,pageSize?:any,sortBy?:any,sortDir
 }
 
 export const getPostsFromBD = async (query:any, blogID?:string) => {
-    debugger
     const byId = blogID ? {  blogId: blogID } : {};
     const search = query.searchNameTerm
         ? { title: { $regex: query.searchNameTerm, $options: 'i' } }
@@ -59,7 +58,7 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
 export const getBlogsFromBD = async (query:any, blogID?:string) => {
     const byId = blogID ? {  blogId: blogID } : {};
     const search = query.searchNameTerm
-        ? { title: { $regex: query.searchNameTerm, $options: 'i' } }
+        ? { name: { $regex: query.searchNameTerm, $options: 'i' } }
         : {};
     const filter = {
         ...byId,
