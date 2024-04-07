@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import {body, param, ValidationError, validationResult} from 'express-validator';
 import {blogsService} from "../services/blogs-service";
 import {blogsRepository} from "../repositories/blogs-repository";
+import {CodeResponsesEnum} from "../utils/utils";
 const websiteUrlPattern =
     /^https:\/\/([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$/;
 export const validateBlogsRequests = [
@@ -98,15 +99,18 @@ export const validateBlogIdForPostsRequests = [
         .withMessage("Type of Blog ID must be string"),
 ]
 
-export const validationBlogsFindByParamId = param("id").custom(
-    async (value) => {
-        const result = await blogsRepository.findBlogByID(value);
-        if (!result) {
-            throw new Error("ID not found");
+export const validationBlogsFindByParamId = (req: Request, res: Response, next: NextFunction) =>{
+    param("id").custom(
+        async (value) => {
+            const result = await blogsRepository.findBlogByID(value);
+            if (!result) {
+                throw new Error("ID not found");
+            }
+            res.sendStatus(CodeResponsesEnum.Not_found_404);
+            return;
         }
-        return true;
-    }
-);
+    );
+}
 
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {

@@ -23,7 +23,7 @@ blogsRouter.get('/', async (req:Request, res:Response)=>{
     res.status(CodeResponsesEnum.OK_200).send(blogs);
 });
 
-blogsRouter.get('/:id', validationBlogsFindByParamId,validateErrorsMiddleware, async (req:Request, res:Response)=>{
+blogsRouter.get('/:id', validationBlogsFindByParamId, async (req:Request, res:Response)=>{
    const blogID = req.params.id;
    const blogByID = await blogsService.findBlogByID(blogID);
    if(!blogID || !blogByID){
