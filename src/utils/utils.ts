@@ -1,7 +1,9 @@
-import {postsCollection} from "../repositories/posts-repository";
+
 import {PostMapper} from "../repositories/query-repositories/posts-query-repository";
-import {blogsCollection} from "../repositories/blogs-repository";
 import {BLogMapper} from "../repositories/query-repositories/blogs-query-repository";
+import {BLogType, PostType} from "./types";
+import {WithId} from "mongodb";
+import {blogsCollection, postsCollection} from "../repositories/db";
 
 export enum CodeResponsesEnum {
     Incorrect_values_400 = 400,
@@ -46,7 +48,7 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
             page: query.pageNumber,
             pageSize: query.pageSize,
             totalCount,
-            items: items.map(post => PostMapper(post)),
+            items: items.map((post:WithId<PostType>) => PostMapper(post)),
         };
     } catch (e) {
         console.log(e);
@@ -78,7 +80,7 @@ export const getBlogsFromBD = async (query:any, blogID?:string) => {
             page: query.pageNumber,
             pageSize: query.pageSize,
             totalCount,
-            items: items.map(blog => BLogMapper(blog)),
+            items: items.map((blog:WithId<BLogType>) => BLogMapper(blog)),
         };
     } catch (e) {
         console.log(e);

@@ -1,11 +1,10 @@
-import {client} from "../repositories/db";
+import {blogsCollection} from "../repositories/db";
 import {InsertOneResult, ObjectId, WithId, UpdateResult, DeleteResult} from "mongodb";
 import {BLogType, OutputBlogType, PostType} from "../utils/types";
 import {BLogMapper} from "./query-repositories/blogs-query-repository";
 export const blogs = [] as BLogType[]
 
 
-export const blogsCollection =  client.db('learning').collection<BLogType>('blogs')
 export const blogsRepository = {
 
    async findBlogByID(blogID:string):Promise<OutputBlogType | null> {

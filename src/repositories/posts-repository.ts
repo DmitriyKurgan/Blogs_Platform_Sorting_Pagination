@@ -1,4 +1,4 @@
-import {client} from "../repositories/db";
+import {client, postsCollection} from "../repositories/db";
 import {ObjectId, WithId, InsertOneResult, UpdateResult, DeleteResult} from "mongodb";
 import {OutputPostType, PostType} from "../utils/types";
 export const posts = [] as PostType[]
@@ -15,7 +15,6 @@ export const PostMapper = (post : WithId<PostType>) : OutputPostType => {
     }
 }
 
-export const postsCollection =  client.db('learning').collection<PostType>('blogs')
 export const postsRepository = {
     async findPostByID(postID:string):Promise<OutputPostType | null> {
         const post: WithId<PostType> | null = await postsCollection.findOne({_id: new ObjectId(postID)});
