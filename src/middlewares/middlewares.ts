@@ -47,22 +47,6 @@ export const validateBlogsRequests = [
         .withMessage("Website URL must be in correct format"),
 ];
 
-export const validatePostsForBlogIDRequests = [
-    body("title")
-        .exists()
-        .withMessage("Title is required")
-        .isString()
-        .withMessage("Type of title must be string")
-        .trim()
-        .isLength({
-            min: 1,
-            max: 30,
-        })
-        .withMessage(
-            "Title length must be more than 0 and less than or equal to 30 symbols"
-        ),
-];
-
 export const validatePostsRequests = [
     body("title")
         .exists()
