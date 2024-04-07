@@ -1,8 +1,16 @@
 import {Request, Response, Router} from "express";
 import {CodeResponsesEnum} from "../utils/utils";
+import {blogsCollection, postsCollection} from "../repositories/db";
 export const testingRouter = Router({})
 
-testingRouter.delete('/', (req:Request, res: Response) => {
-    res.sendStatus(CodeResponsesEnum.Not_content_204);
+testingRouter.delete('/', async (req:Request, res: Response) => {
+    try {
+        await blogsCollection.deleteMany({});
+        await postsCollection.deleteMany({});
+        res.sendStatus(CodeResponsesEnum.Not_content_204);
+    } catch (error) {
+        console.error("Error occurred while clearing the database:", error);
+        res.sendStatus(500);
+    }
 })
 
