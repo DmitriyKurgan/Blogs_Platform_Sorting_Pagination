@@ -6,7 +6,7 @@ import {
     validateAuthorization,
     validateBlogsRequests,
     validateErrorsMiddleware,
-    validatePostsRequests, validationPostsCreation
+    validatePostsRequests
 } from "../middlewares/middlewares";
 import {posts, postsService} from "../services/posts-service";
 import {findAllPostsByBlogID} from "../repositories/query-repositories/posts-query-repository";

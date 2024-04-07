@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import {
-    validateAuthorization,
+    validateAuthorization, validateBlogIdForPostsRequests,
     validateErrorsMiddleware,
     validatePostsRequests, validationPostsCreation
 } from "../middlewares/middlewares";
@@ -30,7 +30,7 @@ postsRouter.get('/:id', async (req:Request, res:Response)=>{
     res.status(CodeResponsesEnum.OK_200).send(postByID);
 });
 
-postsRouter.post('/', validateAuthorization, validatePostsRequests, validationPostsCreation, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+postsRouter.post('/', validateAuthorization, validatePostsRequests,validateBlogIdForPostsRequests, validationPostsCreation, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const blog: OutputBlogType | null = await blogsService.findBlogByID(req.body.blogId)
     if (!blog){
         return res.sendStatus(CodeResponsesEnum.Not_found_404);
@@ -43,7 +43,7 @@ postsRouter.post('/', validateAuthorization, validatePostsRequests, validationPo
     res.status(CodeResponsesEnum.Created_201).send(newPost);
 });
 
-postsRouter.put('/:id', validateAuthorization, validatePostsRequests, validationPostsCreation, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+postsRouter.put('/:id', validateAuthorization, validatePostsRequests,validateBlogIdForPostsRequests, validationPostsCreation, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isUpdated = await postsService.updatePost(postID, req.body);
 
@@ -54,7 +54,7 @@ postsRouter.put('/:id', validateAuthorization, validatePostsRequests, validation
     res.status(CodeResponsesEnum.Not_content_204).send(postByID);
 });
 
-postsRouter.delete('/:id', validateAuthorization, validatePostsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
+postsRouter.delete('/:id', validateAuthorization, validatePostsRequests,validateBlogIdForPostsRequests, validateErrorsMiddleware, async (req:Request, res:Response)=>{
     const postID = req.params.id;
     const isDeleted = await postsService.deletePost(postID);
     if(!isDeleted || !postID){

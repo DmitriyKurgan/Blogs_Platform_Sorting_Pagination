@@ -87,12 +87,15 @@ export const validatePostsRequests = [
         .withMessage(
             "Short description length must be more than 0 and less than or equal to 1000 symbols"
         ),
+];
+
+export const validateBlogIdForPostsRequests = [
     body("blogId")
         .exists()
         .withMessage("Blog ID is required")
         .isString()
         .withMessage("Type of Blog ID must be string"),
-];
+]
 
 
 export const validateAuthorization = (req: Request, res: Response, next: NextFunction) => {
