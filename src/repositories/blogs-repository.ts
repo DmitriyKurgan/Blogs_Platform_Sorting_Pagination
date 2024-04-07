@@ -8,7 +8,6 @@ export const blogs = [] as BLogType[]
 export const blogsRepository = {
 
    async findBlogByID(blogID:string):Promise<OutputBlogType | null> {
-       debugger
        const blog: WithId<BLogType> | null = await blogsCollection.findOne({_id: new ObjectId(blogID)});
        return blog ? BLogMapper(blog) : null
     },

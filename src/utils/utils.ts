@@ -56,7 +56,6 @@ export const getPostsFromBD = async (query:any, blogID?:string) => {
 }
 
 export const getBlogsFromBD = async (query:any) => {
-    debugger
     const search = query.searchNameTerm
         ? { name: { $regex: query.searchNameTerm, $options: 'i' } }
         : {};
