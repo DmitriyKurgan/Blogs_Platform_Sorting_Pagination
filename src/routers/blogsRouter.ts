@@ -24,6 +24,7 @@ blogsRouter.get('/', async (req:Request, res:Response)=>{
 });
 
 blogsRouter.get('/:id', validationBlogsFindByParamId, async (req:Request, res:Response)=>{
+    debugger
    const blogID = req.params.id;
    const blogByID = await blogsService.findBlogByID(blogID);
    if(!blogID || !blogByID){
