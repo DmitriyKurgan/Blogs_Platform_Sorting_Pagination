@@ -13,13 +13,13 @@ export enum CodeResponsesEnum {
     OK_200 = 200,
 }
 
-export const getQueryValues = (pageNumber?:any,pageSize?:any,sortBy?:any,sortDirection?:any,searchTitleTerm?:any)=>{
+export const getQueryValues = (pageNumber?:any,pageSize?:any,sortBy?:any,sortDirection?:any,searchNameTerm?:any)=>{
     return {
         pageNumber: pageNumber ? parseInt(pageNumber as string, 10) : 1,
         pageSize: pageSize ? parseInt(pageSize as string, 10) : 10,
         sortBy: sortBy ? sortBy as string : "createdAt",
         sortDirection: sortDirection ? sortDirection as "asc" | "desc" : "desc",
-        searchNameTerm: searchTitleTerm ? searchTitleTerm as string : undefined,
+        searchNameTerm: searchNameTerm ? searchNameTerm as string : undefined,
     }
 }
 
